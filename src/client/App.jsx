@@ -1,23 +1,41 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
 
-import Counter from './components/counter/counter';
-import Form from './components/form/form';
+import Search from './components/search/search';
+import Product from './components/product/product';
+import Cart from './components/cart/cart';
 
 class App extends React.Component {
-  constructor() {
+    constructor() {
     super();
     this.state = {
       message: 'hello',
+      input: "",
+      productList: [],
+
     };
   }
+
+    // componentDidMount is like window onload
+    componentDidMount() {
+
+        let url = `http://localhost:3000/products`;
+
+        fetch(url)
+          .then(res => res.json())
+          .then(
+            (result) => {
+                this.setState({productList: result})
+            },
+        )
+    }
 
   render() {
     return (
       <div>
-        <Form />
-        Welcome.
-        <Counter message={this.state.message} />
+        <Search all={this.state.productList} />
+        <Product product={this.state.searchedProduct} />
+        <Cart />
       </div>
     );
   }
